@@ -6,6 +6,7 @@ import { ease } from '../lib';
 export const navItems = [
   { id: 'home', label: 'Home' },
   { id: 'about', label: 'About' },
+  ...(config.experience?.jobs.length ? [{ id: 'experience', label: 'Experience' }] : []),
   { id: 'skills', label: 'Skills' },
   { id: 'work', label: 'Work' },
   { id: 'moments', label: 'Moments' },

@@ -20,6 +20,8 @@ const config: PortfolioConfig = {
     accent: '#F5A623',
     // Keeps a small "Template by Vishal Nigam" link in the footer. Set to false to remove it.
     showCredit: true,
+    // Optional: a "Download resume" button. Upload a resume WITHOUT your phone or home address.
+    // resumePdf: 'media/resume.pdf',
   },
 
   hero: {
@@ -109,6 +111,44 @@ const config: PortfolioConfig = {
       { symbol: 'Go', name: 'Go', group: 'code' },
       { symbol: 'Sh', name: 'Bash', group: 'code' },
     ],
+  },
+
+  // Your work history. Delete this whole block to hide the section.
+  // Tip: let Claude fill this from your resume. See README, "Build it with Claude".
+  experience: {
+    title: 'Seven years, *one thread.*',
+    subtitle: 'Making platforms boring, in the best way.',
+    jobs: [
+      {
+        role: 'Senior Platform Engineer',
+        company: 'Example Fintech Inc.',
+        location: 'Toronto, ON',
+        start: '03/2022',
+        end: 'Present',
+        summary: 'I run the Kubernetes platform for a team of 80 engineers.',
+        highlights: [
+          'Built a self-service platform so teams create namespaces, pipelines and dashboards on their own. Setup time went from 3 days to 10 minutes.',
+          'Moved 40+ services to GitOps with Argo CD, so every change is reviewed and every deploy can be rolled back.',
+          'Rebuilt alerting across 60 services. Mean time to detect dropped from 20 minutes to 3.',
+          'Mentor four junior engineers through on-call and design reviews.',
+        ],
+        stack: ['EKS', 'Terraform', 'Argo CD', 'Prometheus'],
+      },
+      {
+        role: 'DevOps Engineer',
+        company: 'Example Retail Co.',
+        location: 'Toronto, ON',
+        start: '06/2018',
+        end: '03/2022',
+        highlights: [
+          'Led the move of a 10-year-old monolith and 42 services from on-prem to AWS with zero downtime.',
+          'Cut infrastructure cost by about 30% in the first year after the migration.',
+        ],
+        stack: ['AWS', 'Terraform', 'Docker', 'Jenkins'],
+      },
+    ],
+    earlier: [{ role: 'Systems Administrator', company: 'Example Hosting', years: '2016 – 2018' }],
+    education: [{ degree: 'B.Sc., Computer Science', school: 'Example University', years: '2012 – 2016' }],
   },
 
   // Leave as [] to hide this section.

@@ -2,10 +2,10 @@ import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion
 import { useLayoutEffect, useRef, useState } from 'react';
 import config from '../portfolio.config';
 import type { Moment } from '../types';
-import { Reveal, Rich, SectionLabel } from '../lib';
+import { Reveal, Rich, SectionLabel, sectionIndex } from '../lib';
 
 const { moments } = config;
-const index = config.certifications.length ? '05' : '04';
+const index = sectionIndex('moments');
 
 function Card({ m, i }: { m: Moment; i: number }) {
   return (

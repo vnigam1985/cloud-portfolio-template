@@ -9,12 +9,26 @@ Free to use. Live on GitHub Pages in about 15 minutes.
 
 - **Animated hero.** A cartoon version of you, standing center screen, with your name huge behind you. It can wave and talk in your voice.
 - **Flipping ID badge** on a lanyard. Tap to flip, drag to swing.
+- **Experience timeline** with every role, highlights, tools, earlier career and education.
 - **Periodic table of your tools.** Filter by Cloud, IaC, Containers, CI/CD, and more.
 - **Certifications, projects, and "proud moments"** that scroll sideways.
 - Smooth scrolling, phone friendly, and fast.
 - **One file to edit.** Every word on the site lives in `src/portfolio.config.ts`.
+- **Resume in, website out.** Give Claude your resume and it fills the whole site for you.
 
 Built with React, Vite, Tailwind CSS, Framer Motion, and Lenis.
+
+---
+
+## Two ways to build it
+
+| | By hand | With Claude |
+|---|---|---|
+| How | Edit one file on GitHub | Give Claude your resume |
+| Time | About 30 minutes | About 10 minutes |
+| Best for | You like full control | You want it done fast, with your full work history |
+
+Both start the same way: steps 1 and 2 below.
 
 ---
 
@@ -43,6 +57,85 @@ Do this before your first edit. If Source stays on "Deploy from a branch", your 
 ### 4. Commit
 Click **Commit changes**. Open the **Actions** tab and wait for the green tick (about 2 minutes).
 Your site is live.
+
+---
+
+## Build it with Claude
+
+Claude can read your resume and write every section of the site: your story, each role with its highlights, your skills table, certifications, projects and proud moments.
+This repo includes a `CLAUDE.md` file that tells Claude exactly how to do it.
+
+Pick the option that matches how you use Claude.
+
+### Option A: Claude chat (no install)
+
+Use this if you chat with Claude at [claude.ai](https://claude.ai) or in the Claude app.
+
+1. Do **steps 1 and 2** above, so you have your own repo with Pages turned on.
+2. In your repo, open `src/portfolio.config.ts` and click the **Download raw file** button (the down arrow, top right of the file).
+3. Start a new chat with Claude. Attach **your resume** and the **portfolio.config.ts** file you downloaded.
+4. Paste this prompt. Fill in the parts in [brackets], or delete the lines you don't need.
+
+```
+I'm building my portfolio website from the attached template config file.
+Rewrite portfolio.config.ts completely using my attached resume.
+
+Rules:
+- Use only facts from my resume or from me. Do not invent employers, dates, numbers,
+  certifications or results. If something is missing, ask me first.
+- Keep the exact same structure and field names as the attached file.
+- experience.jobs: every role from the last 10 to 12 years, newest first,
+  2 to 6 highlights each, strongest first, written as plain active sentences.
+  Older roles go in experience.earlier, degrees in experience.education.
+- skills: 5 to 7 groups and 20 to 32 tools from my resume. Symbols are 1 or 2 letters
+  and unique. Add a short note to my strongest tools.
+- Titles use *asterisks* around one word for the italic accent.
+- Do not include my phone number or home address anywhere.
+- Hero image: [use 'media/hero.jpg' / leave empty for now].
+
+Extra details:
+- My links: LinkedIn [url], GitHub [url], other [url]
+- Projects I'm proud of: [name, one line, link]
+- Numbers I'm proud of: [for example: cut cloud cost 30%, led 6 engineers]
+- My first name for the big hero text: [NAME]
+
+Before you write the file, ask me about anything missing.
+Then return the complete file in one code block, ready to paste.
+```
+
+5. Answer Claude's questions. Read the result and correct anything that isn't quite right. It's your name on it.
+6. Back on GitHub, open `src/portfolio.config.ts`, click the **pencil** icon, select all, paste Claude's file, and **Commit changes**.
+7. Wait about 2 minutes for the **Actions** tab to show a green tick. Your site is live.
+
+If the Actions run fails, open it, copy the red error, and paste it to Claude. It will tell you exactly what to change.
+
+### Option B: Claude Code (Claude does everything)
+
+Use this if you have Claude Code, Anthropic's coding agent, or any Claude that can work with your files and GitHub.
+See [docs.claude.com](https://docs.claude.com) for how to set it up.
+
+1. Do **step 1** above to create your repo from this template.
+2. Ask Claude to clone your repo, or open the cloned folder in Claude Code.
+3. Put your resume in the `resume/` folder. That folder is private: git ignores everything in it, so your resume is never published.
+4. Say:
+
+```
+Build my portfolio from my resume. Follow CLAUDE.md.
+```
+
+5. Claude reads your resume, asks for missing details like links and projects, fills the config, runs a build to check it, and pushes.
+6. Want the animated hero too? Add a fal.ai key to a file called `.env` as `FAL_KEY=your-key` and say:
+
+```
+Now create my animated hero. Use Path 2 from the README. My photos are in resume/.
+```
+
+Claude shows you the cost before each step and asks before running it. `.env` is git-ignored, so your key stays private.
+
+7. If Claude can't change the GitHub Pages setting for you, set **Settings > Pages > Source > GitHub Actions** yourself.
+
+> **Tip for both options:** Claude writes from your resume, so a stronger resume makes a stronger site.
+> Results you can measure (time saved, cost cut, users served) make the best highlights.
 
 ---
 

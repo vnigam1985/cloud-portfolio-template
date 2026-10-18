@@ -1,11 +1,11 @@
 import config from '../portfolio.config';
-import { linkProps, Reveal, Rich, SectionLabel } from '../lib';
+import { linkProps, Reveal, Rich, SectionLabel, sectionIndex } from '../lib';
 
 export function Certifications() {
   if (!config.certifications.length) return null;
   return (
     <section id="certs" className="section-pad py-24 md:py-32">
-      <SectionLabel index="03" label="Certifications" />
+      <SectionLabel index={sectionIndex('certs')} label="Certifications" />
       <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
         <Reveal>
           <h2 className="text-[clamp(2.6rem,6vw,5rem)] font-bold leading-[0.95] tracking-[-0.045em]">
@@ -34,10 +34,9 @@ export function Certifications() {
 }
 
 export function Work() {
-  const idx = config.certifications.length ? '04' : '03';
   return (
     <section id="work" className="section-pad py-24 md:py-32">
-      <SectionLabel index={idx} label="Work" />
+      <SectionLabel index={sectionIndex('work')} label="Work" />
       <Reveal>
         <h2 className="text-[clamp(2.6rem,6vw,5rem)] font-bold leading-[0.95] tracking-[-0.045em]">
           <Rich text="Selected *work.*" />

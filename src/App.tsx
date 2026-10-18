@@ -2,6 +2,7 @@ import Lenis from 'lenis';
 import { useEffect } from 'react';
 import { About } from './components/About';
 import { Contact } from './components/Contact';
+import { Experience } from './components/Experience';
 import { Hero } from './components/Hero';
 import { Moments } from './components/Moments';
 import { Nav } from './components/Nav';
@@ -48,6 +49,7 @@ export default function App() {
       <main>
         <Hero />
         <About />
+        <Experience />
         <Skills />
         <Certifications />
         <Work />

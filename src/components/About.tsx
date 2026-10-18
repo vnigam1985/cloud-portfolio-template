@@ -1,5 +1,5 @@
 import config from '../portfolio.config';
-import { linkProps, Reveal, Rich, SectionLabel } from '../lib';
+import { linkProps, Reveal, Rich, SectionLabel, sectionIndex } from '../lib';
 import { Badge } from './Badge';
 
 const { about } = config;
@@ -7,7 +7,7 @@ const { about } = config;
 export function About() {
   return (
     <section id="about" className="section-pad relative py-24 md:py-36">
-      <SectionLabel index="01" label="About" />
+      <SectionLabel index={sectionIndex('about')} label="About" />
       <div className="grid items-start gap-14 lg:grid-cols-[1.15fr_auto_0.85fr] lg:gap-16">
         <div>
           <Reveal>

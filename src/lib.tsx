@@ -1,5 +1,6 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import type { ReactNode } from 'react';
+import config from './portfolio.config';
 
 /** Resolve a file in /public so it works on GitHub Pages sub-paths too. */
 export const asset = (path: string) =>
@@ -27,6 +28,19 @@ export function Rich({ text }: { text: string }) {
     </>
   );
 }
+
+/** Section numbers follow the order on the page and skip hidden sections. */
+export const sectionIndex = (id: string) => {
+  const order = [
+    'about',
+    config.experience?.jobs.length ? 'experience' : '',
+    'skills',
+    config.certifications.length ? 'certs' : '',
+    'work',
+    'moments',
+  ].filter(Boolean);
+  return String(order.indexOf(id) + 1).padStart(2, '0');
+};
 
 export const ease = [0.16, 1, 0.3, 1] as const;
 

@@ -72,6 +72,31 @@ export type SkillsConfig = {
   elements: Element[];
 };
 
+export type Job = {
+  role: string;
+  company: string;
+  location?: string;
+  /** Free text, for example "05/2022" or "2019". */
+  start: string;
+  /** Free text, for example "Present". */
+  end: string;
+  /** One sentence on the job, shown under the title. Optional. */
+  summary?: string;
+  /** What you did and what changed. Lead with the result. */
+  highlights: string[];
+  /** Tools used in this role. Shown as small tags. */
+  stack?: string[];
+};
+
+export type ExperienceConfig = {
+  title: RichTitle;
+  subtitle?: string;
+  jobs: Job[];
+  /** Older roles shown as a compact list. */
+  earlier?: { role: string; company: string; years: string }[];
+  education?: { degree: string; school: string; years: string }[];
+};
+
 export type Cert = { name: string; issuer: string; year: string; href?: string };
 
 export type Project = {
@@ -96,9 +121,13 @@ export type PortfolioConfig = {
     accent: string;
     /** Shows "Template by ..." in the footer. Set to false to hide it. */
     showCredit: boolean;
+    /** Optional. Your resume PDF in /public/media, e.g. "media/resume.pdf". Adds a Download resume button. */
+    resumePdf?: string;
   };
   hero: HeroConfig;
   about: AboutConfig;
+  /** Leave out (or delete) to hide the experience section. */
+  experience?: ExperienceConfig;
   skills: SkillsConfig;
   /** Leave as [] to hide the certifications section. */
   certifications: Cert[];

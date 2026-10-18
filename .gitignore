@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Private files: never publish
+.env
+.env.*
+resume/*
+!resume/README.md

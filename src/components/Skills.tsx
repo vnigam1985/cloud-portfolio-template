@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import config from '../portfolio.config';
 import type { Element } from '../types';
-import { Reveal, Rich, SectionLabel } from '../lib';
+import { Reveal, Rich, SectionLabel, sectionIndex } from '../lib';
 
 const { skills } = config;
 const numbered = skills.elements.map((e, i) => ({ ...e, n: i + 1 }));
@@ -35,7 +35,7 @@ export function Skills() {
 
   return (
     <section id="skills" className="section-pad relative py-24 md:py-32">
-      <SectionLabel index="02" label="Skills" />
+      <SectionLabel index={sectionIndex('skills')} label="Skills" />
       <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
         <Reveal>
           <h2 className="text-[clamp(2.6rem,6vw,5rem)] font-bold leading-[0.95] tracking-[-0.045em]">
