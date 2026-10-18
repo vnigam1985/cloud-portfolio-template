@@ -1,5 +1,5 @@
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import config from '../portfolio.config';
 import { asset, ease, linkProps, Rich } from '../lib';
 
@@ -30,6 +30,36 @@ export function Hero() {
   const mediaScale = useTransform(scrollYProgress, [0, 1], [1, 0.92]);
   const textY = useTransform(scrollYProgress, [0, 1], ['0%', '-30%']);
   const fade = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
+
+  // Play only while the hero is on screen. Scrolling away (or switching tabs) pauses it;
+  // coming back restarts the intro from the beginning, so visitors hear the full line.
+  useEffect(() => {
+    const v = videoRef.current;
+    const section = ref.current;
+    if (!v || !section) return;
+    let onScreen = true;
+    const sync = () => {
+      if (onScreen && document.visibilityState === 'visible') {
+        if (v.paused) v.play().catch(() => {});
+      } else if (!v.paused) {
+        v.pause();
+        v.currentTime = 0;
+      }
+    };
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        onScreen = entry.isIntersecting;
+        sync();
+      },
+      { threshold: 0.25 },
+    );
+    obs.observe(section);
+    document.addEventListener('visibilitychange', sync);
+    return () => {
+      obs.disconnect();
+      document.removeEventListener('visibilitychange', sync);
+    };
+  }, []);
 
   const toggleSound = () => {
     const v = videoRef.current;
