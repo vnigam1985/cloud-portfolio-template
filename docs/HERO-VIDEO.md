@@ -1,80 +1,107 @@
 # Make your talking hero video
 
 The hero shows you standing in the middle of the page, with your name huge behind you.
-The site makes any **white** in your video blend into the page. So the one rule is:
-**your video must be on a pure white background.**
+You have three options. Start with A, upgrade later.
 
-You can skip the video and use a still photo first. The site gently animates it.
+| Option | Time | Cost | Look |
+|---|---|---|---|
+| A. Still photo | 10 min | Free | Your cut-out photo, gently floating |
+| B. Animated you (recommended) | 30 min | About $1 to $5 | A 3D cartoon of you that waves and talks in your voice |
+| C. Real video of you | 30 min | Varies | Photoreal. Many AI video tools refuse real-person photos, so B is easier |
 
 ---
 
-## Option A: Still photo (10 minutes)
+## Option A: Still photo
 
 1. Take a photo standing, waist-up or full body, against a plain wall.
-2. Remove the background. Free options: remove.bg or Canva's background remover.
-3. Download it as a **PNG** (transparent background).
-4. Save it as `public/media/hero.png`.
-5. In `src/portfolio.config.ts`, set `poster: 'media/hero.png'`.
+2. Remove the background (remove.bg or Canva's background remover). Download as **PNG**.
+3. Save it as `public/media/hero.png`.
+4. In `src/portfolio.config.ts`, set `poster: 'media/hero.png'`.
 
-## Option B: Talking video (30 to 60 minutes)
+---
 
-### Step 1. Prepare your photo
-- Remove the background and put yourself on **pure white** (`#FFFFFF`).
-- If your photo cuts off at the waist and you want full body, extend it first with an AI "expand" tool (Canva Magic Expand, or similar).
+## Option B: Animated you, talking in your voice
 
-### Step 2. Generate the video
-Use any AI image-to-video tool. Popular ones include Kling, Google Veo, Runway, and HeyGen (HeyGen is best if you want your lips to match a script). Features and pricing change often, so check their sites.
+This is how the demo site was made. All three tools below have pay-as-you-go plans.
+Prices change, so check each site before you start.
 
-Upload your white-background photo and use this prompt. Replace the parts in [brackets].
+### Step 1. Turn your photo into a 3D character
+Use any AI image editor that accepts a reference photo (for example Nano Banana Pro on fal.ai, or ChatGPT image editing).
+Upload one full-body photo and one clear headshot, then use this prompt:
 
 ```
-Use the attached photo as the exact person. Keep the face, hairstyle, skin tone,
-and clothing ([describe your outfit]) exactly the same.
-
-Shot: medium-full shot, person standing centered, facing the camera.
-Background: pure white seamless studio background (#FFFFFF), soft even lighting,
-no shadows on the background, no floor line.
-
-Action: the person smiles, gives a small friendly wave, then talks naturally to
-the camera with relaxed hand gestures, as if introducing themselves.
-
-Camera: static, locked off. No zoom, no pan, no cuts.
-Length: 8 seconds. End in the same pose as the start so it loops smoothly.
-Style: photorealistic. No text, no logos, no captions.
+Turn the person in the first photo into a stylized 3D animated character, like a modern
+animated feature film. Keep the likeness clearly recognizable: same face shape, hairline,
+skin tone and expression. Same outfit: [describe your outfit].
+Full body, standing upright, centered, facing the camera, relaxed confident pose,
+hands loosely in pockets. Slightly stylized, soft clean shading, professional, not childish.
+Background: plain pure white (#FFFFFF), seamless, no floor line, no shadow on the background.
+No text, no logos, no props. Portrait 3:4.
 ```
 
-If your tool supports a script for lip sync, keep it short:
+Generate 2 to 4 options and pick the one that looks most like you.
+
+### Step 2. Record your voice line
+Keep it to about 8 seconds:
 
 ```
 Hi, I'm [Name]. I build [what you build]. Scroll down, let me show you.
 ```
 
-### Step 3. Shrink the file
-Keep the video under about 5 MB so the page loads fast on phones.
-If you have ffmpeg installed:
+Record it on your phone, or use a voice clone (ElevenLabs works well).
+Save it as an MP3.
 
-```bash
-ffmpeg -i input.mp4 -vf "scale=-2:1280" -c:v libx264 -crf 28 -preset slow -an -movflags +faststart public/media/hero.mp4
+### Step 3. Make the character talk
+Use a talking-avatar model that takes an image plus audio and lip-syncs them.
+The demo used **Kling AI Avatar v2 Pro** on fal.ai (about $1 for 8 seconds).
+Upload your character image and your MP3, with this prompt:
+
+```
+The animated character stands centered on a pure white background and talks warmly to the
+camera. Small friendly wave at the start, then relaxed natural hand gestures.
+Static camera, no zoom, no cuts. Background stays pure white.
 ```
 
-Remove `-an` if you want to keep the audio. Visitors can tap "Tap for sound".
+### Step 4. Prepare the files for the site
+You need [ffmpeg](https://ffmpeg.org) installed. Run these from the project folder.
+Replace `input.mp4` with your downloaded video.
 
-No ffmpeg? HandBrake (free app) works too. Pick the "Web" preset.
+**Solid version (works everywhere, required).** This turns the white background into the page colour, `#F7F6F2`:
 
-### Step 4. Turn it on
+```bash
+ffmpeg -i input.mp4 -vf "colorlevels=rimax=0.965:gimax=0.965:bimax=0.965,lutrgb=r='if(gt(val,250),247,val)':g='if(gt(val,250),246,val)':b='if(gt(val,250),242,val)',scale=-2:1280,format=yuv420p" -c:v libx264 -crf 25 -c:a aac -movflags +faststart public/media/hero.mp4
+```
+
+**Transparent version (optional, recommended).** Chrome, Edge, Firefox and Android use this,
+so your name shows around you. Safari and iPhone automatically use the solid version:
+
+```bash
+ffmpeg -i input.mp4 -filter_complex "[0:v]colorlevels=rimax=0.965:gimax=0.965:bimax=0.965,scale=-2:1280,format=rgba,colorkey=0xFFFFFF:0.10:0.08,format=yuva420p[v]" -map "[v]" -map 0:a -c:v libvpx-vp9 -pix_fmt yuva420p -b:v 0 -crf 34 -auto-alt-ref 0 -c:a libopus public/media/hero.webm
+```
+
+**Poster frames** (shown while the video loads):
+
+```bash
+ffmpeg -i public/media/hero.mp4 -frames:v 1 public/media/hero-poster.jpg
+```
+
+### Step 5. Turn it on
 In `src/portfolio.config.ts`:
 
 ```ts
 video: 'media/hero.mp4',
-poster: 'media/hero.png', // optional, shows while the video loads
+poster: 'media/hero-poster.jpg',
+videoTransparent: 'media/hero.webm',   // optional
+posterTransparent: '',                 // optional, a transparent .webp or .png
 ```
 
-Save. Done.
+Save. Done. Visitors can tap "Tap for sound" to hear your voice.
 
 ---
 
-**Troubleshooting**
+## Troubleshooting
 
-- *Grey box around me:* your background is not pure white. Re-generate, or color-correct the white to `#FFFFFF`.
-- *I look cut off at the bottom:* that's on purpose. The bottom of the hero fades into the page.
-- *Video won't autoplay on iPhone:* it must be muted to autoplay. The site already does this.
+- **A box shows around me:** your video background is not pure white. Re-generate it, or raise the `colorkey` similarity from `0.10` to `0.15`.
+- **Grey or white halo around my hair:** lower the `colorkey` similarity to `0.06`.
+- **The video won't autoplay on iPhone:** it must start muted. The site already does this.
+- **The file is large:** raise `-crf` (for example 28 for MP4, 38 for WebM). Aim for under 2 MB.

@@ -40,6 +40,15 @@ export function Hero() {
   };
 
   const letters = hero.backdropWord.split('');
+  // Transparent WebM works in Chromium and Firefox. Safari and every iOS browser use the solid MP4.
+  const [alpha] = useState(() => {
+    if (!hero.videoTransparent || typeof navigator === 'undefined') return false;
+    const ua = navigator.userAgent;
+    const webkitOnly = /AppleWebKit/.test(ua) && !/Chrome|Chromium|Edg|Android/.test(ua);
+    const ios = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+    if (webkitOnly || ios) return false;
+    return document.createElement('video').canPlayType('video/webm; codecs="vp9"') !== '';
+  });
 
   return (
     <section id="home" ref={ref} className="relative h-[100svh] min-h-[620px] overflow-hidden bg-paper">
@@ -74,9 +83,12 @@ export function Hero() {
         {hero.video ? (
           <video
             ref={videoRef}
-            className="h-full w-full object-contain object-bottom mix-blend-multiply"
-            src={asset(hero.video)}
-            poster={hero.poster ? asset(hero.poster) : undefined}
+            className="h-full w-full object-contain object-bottom"
+            src={asset(alpha ? hero.videoTransparent! : hero.video)}
+            poster={(() => {
+              const p = alpha && hero.posterTransparent ? hero.posterTransparent : hero.poster;
+              return p ? asset(p) : undefined;
+            })()}
             autoPlay
             muted
             loop

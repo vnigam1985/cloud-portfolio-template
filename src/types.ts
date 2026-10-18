@@ -20,6 +20,14 @@ export type HeroConfig = {
   video: string;
   /** Optional still image shown before the video loads (or instead of a video). */
   poster: string;
+  /**
+   * Optional. The same video with a transparent background (.webm, VP9 with alpha).
+   * Chrome, Edge, Firefox and Android use it so your name shows around you.
+   * Safari and iPhone fall back to `video`. See docs/HERO-VIDEO.md.
+   */
+  videoTransparent?: string;
+  /** Optional transparent poster (.webp or .png) to pair with videoTransparent. */
+  posterTransparent?: string;
   primaryCta: Link;
   secondaryCta?: Link;
   /** Two or three tiny facts shown at bottom-right of the hero. */

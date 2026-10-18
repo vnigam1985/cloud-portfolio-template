@@ -31,6 +31,9 @@ const config: PortfolioConfig = {
     video: '',
     // A cut-out photo of you on a transparent or white background. Example: 'media/hero.png'
     poster: '',
+    // Optional: the same video with a transparent background (.webm) so your name shows around you.
+    videoTransparent: '',
+    posterTransparent: '',
     primaryCta: { label: 'See my work', href: '#work' },
     secondaryCta: { label: 'Download resume', href: 'media/resume.pdf' },
     quickFacts: [
