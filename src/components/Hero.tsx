@@ -49,6 +49,12 @@ export function Hero() {
     if (webkitOnly || ios) return false;
     return document.createElement('video').canPlayType('video/webm; codecs="vp9"') !== '';
   });
+  // MP4 and JPG files cannot be transparent, so we assume they sit on white.
+  // Multiply-blending the whole avatar layer makes that white disappear into the page,
+  // so people can drop in a downloaded file with no editing. PNG, WebP and the
+  // transparent WebM already have real transparency and skip the blend.
+  const shown = hero.video ? (alpha ? hero.videoTransparent! : hero.video) : hero.poster;
+  const blendWhite = !!shown && /\.(mp4|mov|m4v|jpe?g)(\?|$)/i.test(shown);
 
   return (
     <section id="home" ref={ref} className="relative h-[100svh] min-h-[620px] overflow-hidden bg-paper">
@@ -78,7 +84,9 @@ export function Hero() {
         initial={reduce ? false : { opacity: 0, y: 60 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.4, delay: 0.35, ease }}
-        className="absolute bottom-0 left-1/2 h-[72svh] w-full max-w-[640px] -translate-x-1/2 origin-bottom md:h-[90svh]"
+        className={`absolute bottom-0 left-1/2 h-[72svh] w-full max-w-[640px] -translate-x-1/2 origin-bottom md:h-[90svh] ${
+          blendWhite ? 'mix-blend-multiply' : ''
+        }`}
       >
         {hero.video ? (
           <video

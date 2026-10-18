@@ -27,9 +27,10 @@ const config: PortfolioConfig = {
     title: 'Platform *Engineer.*',
     intro: 'I build cloud platforms that ship fast and stay up. Currently helping teams run Kubernetes at scale.',
     backdropWord: 'ALEX',
-    // Your talking video. See docs/HERO-VIDEO.md. Example: 'media/hero.mp4'
+    // Your animated hero. Full guide: README, "Create your animated hero".
+    // Path 1 (image only): video: '', poster: 'media/hero.jpg'
+    // Path 2 (talking video): video: 'media/hero.mp4', poster: 'media/hero.jpg'
     video: '',
-    // A cut-out photo of you on a transparent or white background. Example: 'media/hero.png'
     poster: '',
     // Optional: the same video with a transparent background (.webm) so your name shows around you.
     videoTransparent: '',

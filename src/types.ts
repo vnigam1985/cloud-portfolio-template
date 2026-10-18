@@ -14,16 +14,19 @@ export type HeroConfig = {
   /** Giant faded word behind your video. Usually your first name. */
   backdropWord: string;
   /**
-   * Your talking avatar. Put the file in /public/media and write "media/hero.mp4".
-   * Leave empty ("") to show a placeholder.
+   * Your talking avatar video. Put the file in /public/media and write "media/hero.mp4".
+   * Leave empty ("") to use only the image in `poster`. See README, "Create your animated hero".
    */
   video: string;
-  /** Optional still image shown before the video loads (or instead of a video). */
+  /**
+   * Your hero image: shown while the video loads, or on its own when `video` is empty.
+   * Use a .jpg on a white background (the white blends into the page) or a transparent .png.
+   */
   poster: string;
   /**
    * Optional. The same video with a transparent background (.webm, VP9 with alpha).
    * Chrome, Edge, Firefox and Android use it so your name shows around you.
-   * Safari and iPhone fall back to `video`. See docs/HERO-VIDEO.md.
+   * Safari and iPhone fall back to `video`. See README, "Optional extras for Path 2".
    */
   videoTransparent?: string;
   /** Optional transparent poster (.webp or .png) to pair with videoTransparent. */
